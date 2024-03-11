@@ -24,3 +24,16 @@ const figcaption = document.createElement("figcaption")
     figure.appendChild(img)
     figure.appendChild(figcaption)
   }
+  
+//// Images/projets du portfolio à afficher
+ function getWorks(){
+    try{
+        const workString = JSON.stringify(works)
+        sessionStorage.setItem("works", workString)
+    }catch(err) {
+        console.error(err.message)
+        let content = "Erreur de connexion avec L'API"
+        alertPopup(content, true)
+    }
+    return JSON.parse(sessionStorage.getItem("works"))
+ }
