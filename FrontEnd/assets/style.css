@@ -186,3 +186,58 @@ footer nav ul {
 	margin: 2em
 }
 
+#btn {
+	display: flex;
+	color: rgb(255, 255, 255);
+	text-align: center;
+	font-family: "Syne";
+	font-weight: 700;
+	font-size: 16px;
+	border-radius: 60px;
+	cursor: pointer;
+  }
+
+ /* CSS des boutons */
+.button_category {
+	font-family: 'Syne';
+	font-weight: 700;
+	color:#1D6154;
+	background-color: white;
+	border-radius: 60px;
+	border:#1D6154 1px solid;
+	min-width: 100Px;
+	height: 37px;
+	opacity: 1;
+	transition: 800ms ;
+	cursor: pointer;
+}
+.button_category:hover{
+	background-color: #1D6154;
+	color: white;
+
+}
+.button_div {
+	display: flex;
+	justify-content: center;
+	gap:10px;
+	padding: 25px 0px 50px 0px;
+}
+.log_in {
+	padding-top:160px;
+    DISPLAY: FLEX;
+    FLEX-DIRECTION: COLUMN;
+    ALIGN-ITEMS: CENTER;
+	margin-bottom: 200px;
+
+}
+.log_in p {
+	text-decoration: underline;
+}
+.error {
+	color: #D65353 ;
+	width: 100%;
+	display: block;
+	text-align: center;
+
+}
+
