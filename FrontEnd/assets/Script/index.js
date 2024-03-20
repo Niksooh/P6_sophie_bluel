@@ -30,16 +30,16 @@ const portfolio = document.getElementById("portfolio");
 
 /* DÉCLARATION DE FONCTIONS */
 
-function deleteWorks (){
+function deleteWorks() {
     galleryElement.innerHTML = "";
 };
 
-function createWorks(categoryId = null){
+function createWorks(categoryId = null) {
     deleteWorks();
 
     let displayWorks = works; // Initialiser avec tous les travaux
 
-    if(categoryId !== null) {
+    if (categoryId !== null) {
         displayWorks = works.filter(work => work.categoryId === categoryId); // Filtrer par catégorie si une catégorie est sélectionnée
     }
 
@@ -59,34 +59,33 @@ function createWorks(categoryId = null){
         galleryElement.appendChild(figureGallery); // Déplacer cette ligne pour ajouter le travail à la galerie
     });
 }
-    /**FILTRE */
+/**FILTRE */
 
-    function createFilter(categories) {
-        categories.unshift({ id: 0, name: "Tous" });
+function createFilter(categories) {
+    categories.unshift({ id: 0, name: "Tous" });
 
-        const categoriesElementFilter = document.createElement("div");
-        categoriesElementFilter.classList.add("categories");
-        portfolio.insertBefore(categoriesElementFilter, galleryElement);
+    const categoriesElementFilter = document.createElement("div");
+    categoriesElementFilter.classList.add("categories");
+    portfolio.insertBefore(categoriesElementFilter, galleryElement);
 
-        categories.forEach(categoryElement => {
-            const categoryBtnFilter = document.createElement("button");
-            categoryBtnFilter.innerText = categoryElement.name;
-            categoryBtnFilter.value = categoryElement.id;
-            categoryBtnFilter.classList.add("category-btn");
-            if (categoryElement.id === 0) {
-                categoryBtnFilter.classList.add("category-selected");
-            }
-            categoriesElementFilter.appendChild(categoryBtnFilter);
+    categories.forEach(categoryElement => {
+        const categoryBtnFilter = document.createElement("button");
+        categoryBtnFilter.innerText = categoryElement.name;
+        categoryBtnFilter.value = categoryElement.id;
+        categoryBtnFilter.classList.add("category-btn");
+        if (categoryElement.id === 0) {
+            categoryBtnFilter.classList.add("categorye-selected");
+        }
+        categoriesElementFilter.appendChild(categoryBtnFilter);
 
-            categoryBtnFilter.addEventListener("click", (e) => {
-                const selectedCategoryId = parseInt(e.target.value);
+        categoryBtnFilter.addEventListener("click", (e) => {
+            const selectedCategoryId = parseInt(e.target.value);
 
-                createWorks(selectedCategoryId);
+            createWorks(selectedCategoryId);
 
-                document.querySelectorAll(".category-btn").forEach(filterColor => {
-                    filterColor.classList.toggle("category-selected", filterColor.value == selectedCategoryId);
-                });
+            document.querySelectorAll(".category-btn").forEach(filterColor => {
+                filterColor.classList.toggle("category-selected", filterColor.value == selectedCategoryId);
             });
         });
-    }
-
+    });
+}
