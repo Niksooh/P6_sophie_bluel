@@ -3,7 +3,7 @@ let works = [];
 const galleryElement = document.querySelector(".gallery");
 const portfolio = document.getElementById("portfolio");
 
-
+/* QUAND JE CLIQUE SUR UN FILTRE ET QUE JE RECLIQUE SUR TOUS LES PHOTOS DISPARAISSE */
 /* LISTE DES API */
 
 (async () => {
@@ -88,61 +88,4 @@ function createFilter(categories) {
             });
         });
     });
-}
-
-/** Mode Administrateur */
-
-function adminMode() {
-    const token = sessionStorage.getItem("token");
-    if (token) {
-        enableEditMode();
-        enableLogout();
-        hideCategoryButtons();
-        enableEditButton();
-    }
-}
-
-function enableEditMode() {
-    const editModeBar = `<div class="edit-mode">
-        <i class="logo-edit fa-regular fa-pen-to-square"></i>
-        <p>Mode édition</p>
-    </div>`;
-    header.style.marginTop = "80px";
-    header.insertAdjacentHTML("afterbegin", editModeBar);
-
-    const containerDivBtn = document.createElement("div");
-    containerDivBtn.classList.add("edit-projets");
-    containerDivBtn.appendChild(titlemyProjets);
-
-    const btnToModified = `<div class="edit">
-        <i class="fa-regular fa-pen-to-square"></i>
-        <p>Modifier</p>
-    </div>`;
-
-    portfolio.insertBefore(containerDivBtn, portfolio.firstChild);
-    titlemyProjets.insertAdjacentHTML("afterend", btnToModified);
-}
-
-function enableLogout() {
-    switchLogout.textContent = "logout";
-    switchLogout.href = "#";
-
-    switchLogout.addEventListener("click", () => {
-        sessionStorage.removeItem("token");
-        location.reload();
-    });
-}
-
-function hideCategoryButtons() {
-    const categoriesButtonsFilter = document.querySelectorAll('.category-btn');
-    categoriesButtonsFilter.forEach(button => {
-        button.style.display = 'none';
-    });
-}
-
-function enableEditButton() {
-    const editBtn = document.querySelector(".edit");
-    if (editBtn) {
-        editBtn.addEventListener("click", openFirstModal);
-    }
 }
