@@ -37,10 +37,10 @@ function deleteWorks() {
 function createWorks(categoryId = null) {
     deleteWorks();
 
-    let displayWorks = works; // Initialiser avec tous les travaux
+    let displayWorks = works;
 
     if (categoryId !== null) {
-        displayWorks = works.filter(work => work.categoryId === categoryId); // Filtrer par catégorie si une catégorie est sélectionnée
+        displayWorks = works.filter(work => work.categoryId === categoryId);
     }
 
     displayWorks.forEach(work => {
@@ -56,7 +56,7 @@ function createWorks(categoryId = null) {
 
         figureGallery.appendChild(imageElementGallery);
         figureGallery.appendChild(titleImageGallery);
-        galleryElement.appendChild(figureGallery); // Déplacer cette ligne pour ajouter le travail à la galerie
+        galleryElement.appendChild(figureGallery); 
     });
 }
 /**FILTRE */
