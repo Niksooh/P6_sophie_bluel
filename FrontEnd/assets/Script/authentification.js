@@ -1,12 +1,10 @@
 /* Variable */
 
-const loginForm = documentquerySelector(".identif-form");
+const loginForm = document.querySelector(".identif-form");
 const email = document.querySelector("mail");
 const password = document.querySelector("password");
 const emailError = document.querySelector("email-verification");
 const passwordError = document.querySelector("password-error");
-const connect = document.querySelector("connect");
-
 /* Déclaration fonction */
 
 function stateButton(disabled) {
