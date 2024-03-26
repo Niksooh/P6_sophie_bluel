@@ -88,32 +88,23 @@ function createFilter(categories) {
 
 
 const token = localStorage.getItem("token");
+console.log(token);
 if (token) {
-    /*modeEnable();*/
+    modeEnable();
     logoutActivate();
     buttonHide();
     buttonActivate();
+
 }
 
 
-/*function modeEnable() {
- document.getElementById("Mode-bar").style.display = "block"
+function modeEnable() {
+    document.querySelector(".Mode-bar").style.display = "flex"
+}
 
-      buttonDiv.classList.add("edit-projets");
-    buttonDiv.appendChild(projectTitle);
-
-    const modifButton = `<div class="edit">
-        <i class="fa-regular fa-pen-to-square"></i>
-        <p>Modifier</p>
-    </div>`;
-
-    portfolio.insertBefore(buttonDiv, portfolio.firstChild);
-    projectTitle.insertAdjacentHTML("afterend", modifButton);
-}*/
-
-const switchLogout = document.querySelector('li a[href="authentification.html"]')
 
 function logoutActivate() {
+    const switchLogout = document.querySelector('li a[href="authentification.html"]')
     switchLogout.textContent = "logout";
     switchLogout.href = "#";
     console.log("bonjour")
@@ -133,41 +124,41 @@ function buttonHide() {
 function buttonActivate() {
     const buttonEdit = document.querySelector(".Mode-bar");
     if (buttonEdit) {
-        buttonEdit.addEventListener("click", openPopup);
+        buttonEdit.addEventListener("click", openpopin);
     }
 }
 
 /*Ouverture / fermeture Première modal*/
 
-let popup = null
+let popin = null
 
 document.addEventListener('DOMContentLoaded', function () {
-    const popups = document.querySelectorAll('.popup');
-    popups.forEach(a => {
-        a.addEventListener('click', openPopup);
+    const popins = document.querySelectorAll('.popin');
+    popins.forEach(a => {
+        a.addEventListener('click', openpopin);
     });
 });
 
-const openPopup = function (e) {
+function openpopin(e) {
     e.preventDefault()
-    popup.style.display = null
-    popup.removeAttribute('aria-hidden')
-    popup.setAttribute('aria-popup', 'true')
-    popup = target
-    popup.addEventListener('click', closePopup)
-    popup.querySelector('.close-popup').addEventListener('click', closePopup)
-    popup.querySelector('.popup-stop').addEventListener('click', stopPropagation)
+    popin.style.display = null
+    popin.removeAttribute('aria-hidden')
+    popin.setAttribute('aria-popin', 'true')
+    popin = target
+    popin.addEventListener('click', closepopin)
+    popin.querySelector('.close-popin').addEventListener('click', closepopin)
+    popin.querySelector('.popin-stop').addEventListener('click', stopPropagation)
 }
 
-const closePopup = function (e) {
-    if (popup === null) return
+const closepopin = function (e) {
+    if (popin === null) return
     e.preventDefault()
-    popup.style.display = "none"
-    popup.setAttribute('aria-hidden', 'true')
-    popup.removeAttribute('aria-popup')
-    popup.removeEventListener('click', closePopup)
-    popup.querySelector('.close-popup').removeEventListener('click', closePopup)
-    popup = null
+    popin.style.display = "none"
+    popin.setAttribute('aria-hidden', 'true')
+    popin.removeAttribute('aria-popin')
+    popin.removeEventListener('click', closepopin)
+    popin.querySelector('.close-popin').removeEventListener('click', closepopin)
+    popin = null
 }
 
 const stopPropagation = function (e) {
@@ -176,6 +167,6 @@ const stopPropagation = function (e) {
 
 window.addEventListener('keydown', function (e) {
     if (e.key === "Escape" || e.key === "Esc") {
-        closePopup(e)
+        closepopin(e)
     }
 })
