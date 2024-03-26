@@ -86,19 +86,20 @@ function createFilter(categories) {
 
 /** Mode Administrateur */
 
+
 const token = localStorage.getItem("token");
 if (token) {
-    modeEnable();
+    /*modeEnable();*/
     logoutActivate();
     buttonHide();
     buttonActivate();
 }
 
 
-function modeEnable() {
- document.getElementById("barMode").style.display = "block"
+/*function modeEnable() {
+ document.getElementById("Mode-bar").style.display = "block"
 
-    /**  buttonDiv.classList.add("edit-projets");
+      buttonDiv.classList.add("edit-projets");
     buttonDiv.appendChild(projectTitle);
 
     const modifButton = `<div class="edit">
@@ -107,8 +108,10 @@ function modeEnable() {
     </div>`;
 
     portfolio.insertBefore(buttonDiv, portfolio.firstChild);
-    projectTitle.insertAdjacentHTML("afterend", modifButton);*/
-}
+    projectTitle.insertAdjacentHTML("afterend", modifButton);
+}*/
+
+const switchLogout = document.querySelector('li a[href="authentification.html"]')
 
 function logoutActivate() {
     switchLogout.textContent = "logout";
@@ -128,7 +131,7 @@ function buttonHide() {
 }
 
 function buttonActivate() {
-    const buttonEdit = document.querySelector(".edit");
+    const buttonEdit = document.querySelector(".Mode-bar");
     if (buttonEdit) {
         buttonEdit.addEventListener("click", openPopup);
     }
