@@ -9,11 +9,23 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap"
 		rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+		integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
 
 <body>
+	<div class="Mode-bar">
+		<i class="Bar-logo fa-regular fa-pen-to-square"></i>
+		<p>Mode édition</p>
+	</div>
+	<div class="Bar-modif">
+	 <div class="Bar">
+		<i class="fa-regular fa-pen-to-square"></i>
+		<p>modifier</p>
+	</div>
 	<header>
 		<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 		<nav>
@@ -32,7 +44,8 @@
 			</figure>
 			<article>
 				<h2>Designer d'espace</h2>
-				<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison
+				<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la
+					livraison
 					finale du chantier.</p>
 				<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les
 					couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du
@@ -60,7 +73,7 @@
 			</form>
 		</section>
 
-		<aside class="popup-container" aria-hidden="true" role="dialog" aria-labelledby="popup-title">
+		<aside class="popup" aria-hidden="true" role="dialog" aria-labelledby="popup-title">
 			<div class="popup-content popup-delete popup-stop">
 				<div class="close-popup">
 					<i class="close-icon fa-solid fa-times"></i>
@@ -68,8 +81,8 @@
 				<h2 class="popup-title">Galerie photo</h2>
 				<div class="gallery-listener">
 				</div>
-				<p class="deleted-message">Photo supprimée</p>
-				<button class="add-photo-btn">Ajouter une photo</button>
+				<p class="message-delete">Photo supprimée</p>
+				<button class="btn-add-photo">Ajouter une photo</button>
 			</div>
 
 			<div class="popup-content popup-add">
