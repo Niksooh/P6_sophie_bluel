@@ -64,7 +64,7 @@ loginForm.addEventListener("submit", async (e) => {
 
         const data = await response.json();
         btnSubmit();
-        sessionStorage.setItem("token", data.token);
+        localStorage.setItem("token", data.token);
         location.href = "index.html";
     } catch (error) {
         if (error.message === "401") {

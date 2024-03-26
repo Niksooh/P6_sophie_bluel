@@ -8,20 +8,14 @@ const portfolio = document.getElementById("portfolio");
 
 (async () => {
     try {
-        const worksResponse = await fetch("http://localhost:5678/api/works").then(response => {
-            if (!response.ok) throw Error(`${response.status}`);
-            return response.json();
-        });
-
-        works = worksResponse;
+        const worksResponse = await fetch("http://localhost:5678/api/works")
+        works = await worksResponse.json();
         createWorks();
 
-        const categoriesResponse = await fetch("http://localhost:5678/api/categories").then(response => {
-            if (!response.ok) throw Error(`${response.status}`);
-            return response.json();
-        });
+        const categoriesResponse = await fetch("http://localhost:5678/api/categories")
+        const categories = await categoriesResponse.json();
+        createFilter(categories);
 
-        createFilter(categoriesResponse);
     } catch (error) {
         alert("Erreur : " + error);
     }
@@ -39,7 +33,7 @@ function createWorks(categoryId = null) {
 
     let displayWorks = works;
 
-    if (categoryId !== null) {
+    if (categoryId !== null && categoryId !== 0) {
         displayWorks = works.filter(work => work.categoryId === categoryId);
     }
 
@@ -89,3 +83,96 @@ function createFilter(categories) {
         });
     });
 }
+
+/** Mode Administrateur */
+
+const token = localStorage.getItem("token");
+if (token) {
+    modeEnable();
+    logoutActivate();
+    buttonHide();
+    buttonActivate();
+}
+
+
+function modeEnable() {
+ document.getElementById("barMode").style.display = "block"
+
+    /**  buttonDiv.classList.add("edit-projets");
+    buttonDiv.appendChild(projectTitle);
+
+    const modifButton = `<div class="edit">
+        <i class="fa-regular fa-pen-to-square"></i>
+        <p>Modifier</p>
+    </div>`;
+
+    portfolio.insertBefore(buttonDiv, portfolio.firstChild);
+    projectTitle.insertAdjacentHTML("afterend", modifButton);*/
+}
+
+function logoutActivate() {
+    switchLogout.textContent = "logout";
+    switchLogout.href = "#";
+    console.log("bonjour")
+    switchLogout.addEventListener("click", () => {
+        localStorage.removeItem("token");
+        location.reload();
+    });
+}
+
+function buttonHide() {
+    const filterButton = document.querySelectorAll('.category-btn');
+    filterButton.forEach(button => {
+        button.style.display = 'none';
+    });
+}
+
+function buttonActivate() {
+    const buttonEdit = document.querySelector(".edit");
+    if (buttonEdit) {
+        buttonEdit.addEventListener("click", openPopup);
+    }
+}
+
+/*Ouverture / fermeture Première modal*/
+
+let popup = null
+
+document.addEventListener('DOMContentLoaded', function () {
+    const popups = document.querySelectorAll('.popup');
+    popups.forEach(a => {
+        a.addEventListener('click', openPopup);
+    });
+});
+
+const openPopup = function (e) {
+    e.preventDefault()
+    popup.style.display = null
+    popup.removeAttribute('aria-hidden')
+    popup.setAttribute('aria-popup', 'true')
+    popup = target
+    popup.addEventListener('click', closePopup)
+    popup.querySelector('.close-popup').addEventListener('click', closePopup)
+    popup.querySelector('.popup-stop').addEventListener('click', stopPropagation)
+}
+
+const closePopup = function (e) {
+    if (popup === null) return
+    e.preventDefault()
+    popup.style.display = "none"
+    popup.setAttribute('aria-hidden', 'true')
+    popup.removeAttribute('aria-popup')
+    popup.removeEventListener('click', closePopup)
+    popup.querySelector('.close-popup').removeEventListener('click', closePopup)
+    popup = null
+}
+
+const stopPropagation = function (e) {
+    e.stopPropagation()
+}
+
+window.addEventListener('keydown', function (e) {
+    if (e.key === "Escape" || e.key === "Esc") {
+        closePopup(e)
+    }
+})
