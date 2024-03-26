@@ -276,14 +276,14 @@ footer nav ul {
 	border-radius: 55px ;
 }
 
-.error-mail {
+.email-verification {
 	color: red;
 	font-weight: 700;
 	margin-top: 6px;
 	display: none;
 }
 
-.error-password {
+.password-error {
 	color: red;
 	font-weight: 700;
 	margin-top: 6px;
@@ -295,7 +295,7 @@ footer nav ul {
 	height: 59px;
 	background-color: #000000;
 	color: #ffffff;
-	display: flex;
+	display: none;
 	align-items: center;
 	justify-content: center;
 	gap: 12px;
@@ -311,6 +311,7 @@ footer nav ul {
 }
 
 .Bar-modif {
+	display: ;
 	justify-content: center;
 	gap: 31px;
 	height: 30px;
@@ -325,7 +326,7 @@ footer nav ul {
 }
 
 .Bar i {
-font-size: 20cdpx;
+font-size: 20px;
 }
 
 
