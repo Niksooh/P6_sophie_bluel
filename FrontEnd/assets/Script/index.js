@@ -3,7 +3,7 @@ let works = [];
 const galleryElement = document.querySelector(".gallery");
 const portfolio = document.getElementById("portfolio");
 
-/* QUAND JE CLIQUE SUR UN FILTRE ET QUE JE RECLIQUE SUR TOUS LES PHOTOS DISPARAISSE */
+/* QUAND JE CLIQUE SUR UN FILTRE ET QUE JE RECLIQUE SUR "TOUS" LES PHOTOS DISPARAISSE */
 /* LISTE DES API */
 
 (async () => {
