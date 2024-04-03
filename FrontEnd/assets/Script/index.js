@@ -2,171 +2,224 @@
 let works = [];
 const galleryElement = document.querySelector(".gallery");
 const portfolio = document.getElementById("portfolio");
+const token = localStorage.getItem("token");
 
-/* QUAND JE CLIQUE SUR UN FILTRE ET QUE JE RECLIQUE SUR "TOUS" LES PHOTOS DISPARAISSE */
 /* LISTE DES API */
 
 (async () => {
-    try {
-        const worksResponse = await fetch("http://localhost:5678/api/works")
-        works = await worksResponse.json();
-        createWorks();
-
-        const categoriesResponse = await fetch("http://localhost:5678/api/categories")
-        const categories = await categoriesResponse.json();
-        createFilter(categories);
-
-    } catch (error) {
-        alert("Erreur : " + error);
+  try {
+    const worksResponse = await fetch("http://localhost:5678/api/works");
+    works = await worksResponse.json();
+    createWorks();
+    createWorkspopinFirst ();
+    if (!token) {
+      const categoriesResponse = await fetch(
+        "http://localhost:5678/api/categories"
+      );
+      const categories = await categoriesResponse.json();
+      createFilter(categories);
     }
+  } catch (error) {
+    alert("Erreur : " + error);
+  }
 })();
-
 
 /* DÉCLARATION DE FONCTIONS */
 
 function deleteWorks() {
-    galleryElement.innerHTML = "";
-};
+  galleryElement.innerHTML = "";
+}
 
 function createWorks(categoryId = null) {
-    deleteWorks();
+  deleteWorks();
 
-    let displayWorks = works;
+  let displayWorks = works;
 
-    if (categoryId !== null && categoryId !== 0) {
-        displayWorks = works.filter(work => work.categoryId === categoryId);
-    }
+  if (categoryId !== null && categoryId !== 0) {
+    displayWorks = works.filter((work) => work.categoryId === categoryId);
+  }
 
-    displayWorks.forEach(work => {
-        const figureGallery = document.createElement("figure");
-        figureGallery.setAttribute("id", `work-${work.id}`);
+  displayWorks.forEach((work) => {
+    const figureGallery = document.createElement("figure");
+    figureGallery.setAttribute("id", `work-${work.id}`);
 
-        const imageElementGallery = document.createElement("img");
-        imageElementGallery.src = work.imageUrl;
-        imageElementGallery.setAttribute("alt", work.title);
+    const imageElementGallery = document.createElement("img");
+    imageElementGallery.src = work.imageUrl;
+    imageElementGallery.setAttribute("alt", work.title);
 
-        const titleImageGallery = document.createElement("figcaption");
-        titleImageGallery.innerText = work.title;
+    const titleImageGallery = document.createElement("figcaption");
+    titleImageGallery.innerText = work.title;
 
-        figureGallery.appendChild(imageElementGallery);
-        figureGallery.appendChild(titleImageGallery);
-        galleryElement.appendChild(figureGallery);
-    });
+    figureGallery.appendChild(imageElementGallery);
+    figureGallery.appendChild(titleImageGallery);
+    galleryElement.appendChild(figureGallery);
+  });
 }
 /**FILTRE */
 
 function createFilter(categories) {
-    categories.unshift({ id: 0, name: "Tous" });
+  categories.unshift({ id: 0, name: "Tous" });
 
-    const categoriesElementFilter = document.createElement("div");
-    categoriesElementFilter.classList.add("categories");
-    portfolio.insertBefore(categoriesElementFilter, galleryElement);
+  const categoriesElementFilter = document.createElement("div");
+  categoriesElementFilter.classList.add("categories");
 
-    categories.forEach(categoryElement => {
-        const categoryBtnFilter = document.createElement("button");
-        categoryBtnFilter.innerText = categoryElement.name;
-        categoryBtnFilter.value = categoryElement.id;
-        categoryBtnFilter.classList.add("category-btn");
-        if (categoryElement.id === 0) {
-            categoryBtnFilter.classList.add("categorye-selected");
-        }
-        categoriesElementFilter.appendChild(categoryBtnFilter);
+  portfolio.insertBefore(categoriesElementFilter, galleryElement);
 
-        categoryBtnFilter.addEventListener("click", (e) => {
-            const selectedCategoryId = parseInt(e.target.value);
+  categories.forEach((categoryElement) => {
+    const categoryBtnFilter = document.createElement("button");
+    categoryBtnFilter.innerText = categoryElement.name;
+    categoryBtnFilter.value = categoryElement.id;
+    categoryBtnFilter.classList.add("category-btn");
+    if (categoryElement.id === 0) {
+      categoryBtnFilter.classList.add("categorye-selected");
+    }
+    categoriesElementFilter.appendChild(categoryBtnFilter);
 
-            createWorks(selectedCategoryId);
+    categoryBtnFilter.addEventListener("click", (e) => {
+      const selectedCategoryId = parseInt(e.target.value);
 
-            document.querySelectorAll(".category-btn").forEach(filterColor => {
-                filterColor.classList.toggle("category-selected", filterColor.value == selectedCategoryId);
-            });
-        });
+      createWorks(selectedCategoryId);
+
+      document.querySelectorAll(".category-btn").forEach((filterColor) => {
+        filterColor.classList.toggle(
+          "category-selected",
+          filterColor.value == selectedCategoryId
+        );
+      });
     });
+  });
 }
 
 /** Mode Administrateur */
 
-
-const token = localStorage.getItem("token");
-console.log(token);
 if (token) {
-    modeEnable();
-    logoutActivate();
-    buttonHide();
-    buttonActivate();
-
+  modeEnable();
+  logoutActivate();
+  buttonActivate();
 }
-
 
 function modeEnable() {
-    document.querySelector(".Mode-bar").style.display = "flex"
+  document.querySelector(".Mode-bar").style.display = "flex";
+  document.querySelector(".Bar-modif-2").style.display = "flex";
 }
-
 
 function logoutActivate() {
-    const switchLogout = document.querySelector('li a[href="authentification.html"]')
-    switchLogout.textContent = "logout";
-    switchLogout.href = "#";
-    console.log("bonjour")
-    switchLogout.addEventListener("click", () => {
-        localStorage.removeItem("token");
-        location.reload();
-    });
-}
-
-function buttonHide() {
-    const filterButton = document.querySelectorAll('.category-btn');
-    filterButton.forEach(button => {
-        button.style.display = 'none';
-    });
+  const switchLogout = document.querySelector(
+    'li a[href="authentification.html"]'
+  );
+  switchLogout.textContent = "logout";
+  switchLogout.href = "#";
+  switchLogout.addEventListener("click", () => {
+    localStorage.removeItem("token");
+    location.reload();
+  });
 }
 
 function buttonActivate() {
-    const buttonEdit = document.querySelector(".Mode-bar");
-    if (buttonEdit) {
-        buttonEdit.addEventListener("click", openpopin);
-    }
+  const buttonEdit = document.querySelector(".Mode-bar");
+  if (buttonEdit) {
+    buttonEdit.addEventListener("click", openpopin);
+  }
 }
 
 /*Ouverture / fermeture Première modal*/
 
-let popin = null
+const popin = document.querySelector(".popin");
 
-document.addEventListener('DOMContentLoaded', function () {
-    const popins = document.querySelectorAll('.popin');
-    popins.forEach(a => {
-        a.addEventListener('click', openpopin);
-    });
+document.addEventListener("DOMContentLoaded", function () {
+  const popinButtons = document.querySelectorAll(".Bar-modif-2");
+  popinButtons.forEach((button) => {
+    button.addEventListener("click", openpopin);
+  });
 });
 
 function openpopin(e) {
-    e.preventDefault()
-    popin.style.display = null
-    popin.removeAttribute('aria-hidden')
-    popin.setAttribute('aria-popin', 'true')
-    popin = target
-    popin.addEventListener('click', closepopin)
-    popin.querySelector('.close-popin').addEventListener('click', closepopin)
-    popin.querySelector('.popin-stop').addEventListener('click', stopPropagation)
+  e.preventDefault();
+  popin.style.display = "block";
+  popin.removeAttribute("aria-hidden");
+  popin.setAttribute("aria-popin", "true");
+  popin.addEventListener("click", closepopin);
+  popin.querySelector(".close-popin").addEventListener("click", closepopin);
+  popin.querySelector(".popin-stop").addEventListener("click", stopPropagation);
 }
 
 const closepopin = function (e) {
-    if (popin === null) return
-    e.preventDefault()
-    popin.style.display = "none"
-    popin.setAttribute('aria-hidden', 'true')
-    popin.removeAttribute('aria-popin')
-    popin.removeEventListener('click', closepopin)
-    popin.querySelector('.close-popin').removeEventListener('click', closepopin)
-    popin = null
-}
+  if (popin === null) return;
+  e.preventDefault();
+  popin.style.display = "none";
+  popin.setAttribute("aria-hidden", "true");
+  popin.removeAttribute("aria-popin");
+  popin.removeEventListener("click", closepopin);
+  popin.querySelector(".close-popin").removeEventListener("click", closepopin);
+};
 
 const stopPropagation = function (e) {
-    e.stopPropagation()
+  e.stopPropagation();
+};
+
+window.addEventListener("keydown", function (e) {
+  if (e.key === "Escape" || e.key === "Esc") {
+    closepopin(e);
+  }
+});
+
+/*Fonction pour afficher le contenu du modal*/
+
+const galleryContentPopinFirst = document.querySelector(".gallery-listener")
+
+function createWorkspopinFirst() {
+
+    galleryContentPopinFirst.innerHTML = "";
+
+    works.forEach(work => {
+        const popinFirst = document.createElement("figure");
+        popinFirst.classList.add("gallery-popinFirst");
+        popinFirst.id = `popin-${work.id}`;
+
+        const imgPopinFirst = new Image();
+        imgPopinFirst.classList.add("popin-img");
+        imgPopinFirst.src = work.imageUrl;
+
+        const garbage = document.createElement("i");
+        garbage.classList.add("fa-solid", "fa-trash-can", "delete-work");
+        garbage.id = `garbage-${work.id}`;
+        garbage.addEventListener("click", () => deleteWorkspopinFirst(work.id));
+
+        popinFirst.appendChild(imgPopinFirst);
+        popinFirst.appendChild(garbage);
+
+        galleryContentPopinFirst.appendChild(popinFirst);
+    });
+};
+
+async function deleteWorkspopinFirst(id) {
+    try {
+        const response = await fetch(`http://localhost:5678/api/works/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`${response.status}`);
+        }
+
+        works = works.filter(work => work.id !== id);
+
+        createWorkspopinFirst();
+
+        messagePhotoDeleted.style.display = "flex";
+        setTimeout(() => {
+            messagePhotoDeleted.style.display = "none";
+        }, 1500);
+
+        createWorks();
+    } catch (error) {
+        alert("Erreur : " + error);
+    }
 }
 
-window.addEventListener('keydown', function (e) {
-    if (e.key === "Escape" || e.key === "Esc") {
-        closepopin(e)
-    }
-})
+
