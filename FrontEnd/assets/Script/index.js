@@ -122,7 +122,7 @@ function buttonActivate() {
   }
 }
 
-/*Ouverture / fermeture Première modal*/
+/*Ouverture / fermeture Première popin*/
 
 const popin = document.querySelector(".popin");
 
@@ -135,22 +135,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function openpopin(e) {
   e.preventDefault();
-  popin.style.display = "block";
+  popin.style.display = "flex";
   popin.removeAttribute("aria-hidden");
   popin.setAttribute("aria-popin", "true");
-  popin.addEventListener("click", closepopin);
-  popin.querySelector(".close-popin").addEventListener("click", closepopin);
+  popin.addEventListener("click", closePopin);
+  popin.querySelector(".popin-close").addEventListener("click", closePopin);
   popin.querySelector(".popin-stop").addEventListener("click", stopPropagation);
 }
 
-const closepopin = function (e) {
+const closePopin = function (e) {
   if (popin === null) return;
   e.preventDefault();
   popin.style.display = "none";
   popin.setAttribute("aria-hidden", "true");
   popin.removeAttribute("aria-popin");
-  popin.removeEventListener("click", closepopin);
-  popin.querySelector(".close-popin").removeEventListener("click", closepopin);
+  popin.removeEventListener("click", closePopin);
+  popin.querySelector(".popin-close").removeEventListener("click", closePopin);
 };
 
 const stopPropagation = function (e) {
@@ -159,11 +159,11 @@ const stopPropagation = function (e) {
 
 window.addEventListener("keydown", function (e) {
   if (e.key === "Escape" || e.key === "Esc") {
-    closepopin(e);
+    closePopin(e);
   }
 });
 
-/*Fonction pour afficher le contenu du modal*/
+/*Fonction pour afficher le contenu du popin*/
 
 const galleryContentPopinFirst = document.querySelector(".gallery-listener")
 
@@ -222,4 +222,51 @@ async function deleteWorkspopinFirst(id) {
     }
 }
 
+/* fonction ajout photo */
 
+const firstPop = document.querySelector(".popin-delete");
+const popAdd = document.querySelector(".popin-add");
+const addBtn = document.querySelector(".btn-add-photo");
+
+  addBtn.addEventListener("click", () => {
+
+      firstPop.style.display = "none";
+      popAdd.style.display = "flex";
+
+      const btnCross = document.querySelector(".close-icon");
+      btnCross.addEventListener("click", closePopin);
+      popAdd.addEventListener("click", stopPropagation);
+
+      const returnPopin = document.querySelector(".return-popin");
+      returnPopin.addEventListener("click", firstPopReturn);
+  });
+
+function firstPopReturn() {
+
+  popAdd.style.display = "none";
+  firstPop.style.display = "block";
+
+};
+
+/* Fonction retour à la première popin Probleme CSS apres retour popin*/
+const arrowLeft = document.querySelector(".return-left")
+
+  arrowLeft.addEventListener("click", () => {
+    firstPop.style.display = "flex";
+    popAdd.style.display = "none";
+  });
+
+
+
+function categoryAdd() {
+  category.shift();
+
+  for (let i = 0; i < categories.length; i++) {
+      const category = category[i];
+      const worksCategory = document.createElement("option");
+      worksCategory.setAttribute("value", category.id);
+      worksCategory.setAttribute("name", category.name);
+      worksCategory.innerText = category.name;
+      popAdd.appendChild(worksCategory);
+  }
+};
