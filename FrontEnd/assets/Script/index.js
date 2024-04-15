@@ -237,7 +237,7 @@ const addBtn = document.querySelector(".btn-add-photo");
       btnCross.addEventListener("click", closePopin);
       popAdd.addEventListener("click", stopPropagation);
 
-      const returnPopin = document.querySelector(".return-popin");
+      const returnPopin = document.querySelector(".return-left");
       returnPopin.addEventListener("click", firstPopReturn);
   });
 
@@ -248,7 +248,6 @@ function firstPopReturn() {
 
 };
 
-/* Fonction retour à la première popin Probleme CSS apres retour popin*/
 const arrowLeft = document.querySelector(".return-left")
 
   arrowLeft.addEventListener("click", () => {
@@ -257,9 +256,10 @@ const arrowLeft = document.querySelector(".return-left")
   });
 
 
+/* Menu déroulant choix catégorie popin PAS fonctionnel voir avec Antoine*/
 
 function categoryAdd() {
-  category.shift();
+  categories.shift();
 
   for (let i = 0; i < categories.length; i++) {
       const category = category[i];
