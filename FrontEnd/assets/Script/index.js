@@ -11,14 +11,15 @@ const token = localStorage.getItem("token");
     const worksResponse = await fetch("http://localhost:5678/api/works");
     works = await worksResponse.json();
     createWorks();
-    createWorkspopinFirst ();
+    createWorkspopinFirst();
+    const categoriesResponse = await fetch(
+      "http://localhost:5678/api/categories"
+    );
+    const categories = await categoriesResponse.json();
     if (!token) {
-      const categoriesResponse = await fetch(
-        "http://localhost:5678/api/categories"
-      );
-      const categories = await categoriesResponse.json();
       createFilter(categories);
     }
+    addCategoriesPopin(categories);
   } catch (error) {
     alert("Erreur : " + error);
   }
@@ -165,61 +166,60 @@ window.addEventListener("keydown", function (e) {
 
 /*Fonction pour afficher le contenu du popin*/
 
-const galleryContentPopinFirst = document.querySelector(".gallery-listener")
+const galleryContentPopinFirst = document.querySelector(".gallery-listener");
 
 function createWorkspopinFirst() {
+  galleryContentPopinFirst.innerHTML = "";
 
-    galleryContentPopinFirst.innerHTML = "";
+  works.forEach((work) => {
+    const popinFirst = document.createElement("figure");
+    popinFirst.classList.add("gallery-popinFirst");
+    popinFirst.id = `popin-${work.id}`;
 
-    works.forEach(work => {
-        const popinFirst = document.createElement("figure");
-        popinFirst.classList.add("gallery-popinFirst");
-        popinFirst.id = `popin-${work.id}`;
+    const imgPopinFirst = new Image();
+    imgPopinFirst.classList.add("popin-img");
+    imgPopinFirst.src = work.imageUrl;
 
-        const imgPopinFirst = new Image();
-        imgPopinFirst.classList.add("popin-img");
-        imgPopinFirst.src = work.imageUrl;
+    const garbage = document.createElement("i");
+    garbage.classList.add("fa-solid", "fa-trash-can", "delete-work");
+    garbage.id = `garbage-${work.id}`;
+    garbage.addEventListener("click", () => deleteWorkspopinFirst(work.id));
 
-        const garbage = document.createElement("i");
-        garbage.classList.add("fa-solid", "fa-trash-can", "delete-work");
-        garbage.id = `garbage-${work.id}`;
-        garbage.addEventListener("click", () => deleteWorkspopinFirst(work.id));
+    popinFirst.appendChild(imgPopinFirst);
+    popinFirst.appendChild(garbage);
 
-        popinFirst.appendChild(imgPopinFirst);
-        popinFirst.appendChild(garbage);
-
-        galleryContentPopinFirst.appendChild(popinFirst);
-    });
-};
+    galleryContentPopinFirst.appendChild(popinFirst);
+  });
+}
 
 async function deleteWorkspopinFirst(id) {
-    try {
-        const response = await fetch(`http://localhost:5678/api/works/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token")
-            },
-        });
+  try {
+    const response = await fetch(`http://localhost:5678/api/works/${id}`, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
 
-        if (!response.ok) {
-            throw new Error(`${response.status}`);
-        }
-
-        works = works.filter(work => work.id !== id);
-
-        createWorkspopinFirst();
-
-        messagePhotoDeleted.style.display = "flex";
-        setTimeout(() => {
-            messagePhotoDeleted.style.display = "none";
-        }, 1500);
-
-        createWorks();
-    } catch (error) {
-        alert("Erreur : " + error);
+    if (!response.ok) {
+      throw new Error(`${response.status}`);
     }
+
+    works = works.filter((work) => work.id !== id);
+
+    createWorkspopinFirst();
+
+    messagePhotoDeleted.style.display = "flex";
+    setTimeout(() => {
+      messagePhotoDeleted.style.display = "none";
+    }, 1500);
+
+    createWorks();
+  } catch (error) {
+    alert("Erreur : " + error);
+  }
 }
 
 /* fonction ajout photo */
@@ -228,45 +228,42 @@ const firstPop = document.querySelector(".popin-delete");
 const popAdd = document.querySelector(".popin-add");
 const addBtn = document.querySelector(".btn-add-photo");
 
-  addBtn.addEventListener("click", () => {
+addBtn.addEventListener("click", () => {
+  firstPop.style.display = "none";
+  popAdd.style.display = "flex";
 
-      firstPop.style.display = "none";
-      popAdd.style.display = "flex";
+  const btnCross = document.querySelector(".close-icon");
+  btnCross.addEventListener("click", closePopin);
+  popAdd.addEventListener("click", stopPropagation);
 
-      const btnCross = document.querySelector(".close-icon");
-      btnCross.addEventListener("click", closePopin);
-      popAdd.addEventListener("click", stopPropagation);
-
-      const returnPopin = document.querySelector(".return-left");
-      returnPopin.addEventListener("click", firstPopReturn);
-  });
+  const returnPopin = document.querySelector(".return-left");
+  returnPopin.addEventListener("click", firstPopReturn);
+});
 
 function firstPopReturn() {
-
   popAdd.style.display = "none";
   firstPop.style.display = "block";
+}
 
-};
+const arrowLeft = document.querySelector(".return-left");
 
-const arrowLeft = document.querySelector(".return-left")
+arrowLeft.addEventListener("click", () => {
+  firstPop.style.display = "flex";
+  popAdd.style.display = "none";
+});
 
-  arrowLeft.addEventListener("click", () => {
-    firstPop.style.display = "flex";
-    popAdd.style.display = "none";
+/* Menu déroulant choix catégorie popin */
+
+const categoriesPopin = document.getElementById("photo-category");
+
+function addCategoriesPopin(categories) {
+  console.log(categories);
+  categories.forEach((category) => {
+    const worksCategories = document.createElement("option");
+
+    worksCategories.setAttribute("value", category.id);
+    worksCategories.setAttribute("name", category.name);
+    worksCategories.innerText = category.name;
+    categoriesPopin.appendChild(worksCategories);
   });
-
-
-/* Menu déroulant choix catégorie popin PAS fonctionnel voir avec Antoine*/
-
-function categoryAdd() {
-  categories.shift();
-
-  for (let i = 0; i < categories.length; i++) {
-      const category = category[i];
-      const worksCategory = document.createElement("option");
-      worksCategory.setAttribute("value", category.id);
-      worksCategory.setAttribute("name", category.name);
-      worksCategory.innerText = category.name;
-      popAdd.appendChild(worksCategory);
-  }
-};
+}
