@@ -110,20 +110,19 @@
           <h2 class="popin-title">Ajout photo</h2>
           <form class="photo-form" action="#" method="post">
             <div class="photo-upload">
-              <i class="upload-icon fa-regular fa-image"></i>
+
               <div class="upload-content">
+                <i class="upload-icon fa-regular fa-image"></i>
                 <label class="upload-btn" for="file">+ Ajouter une photo</label>
                 <input
                   id="file"
                   type="file"
                   name="file"
-                  accept="image/png, image/jpeg
-                  onchange="seeNewImg()"
+                  accept="image/png, image/jpeg"
                 />
-                <img src="" alt="">
                 <p class="file-type">jpg, png (taille max : 4 Mo)</p>
               </div>
-              <div class="preview"></div>
+              <img id="preview" src="" alt="" />
             </div>
             <div class="photo-details">
               <label for="photo-title">Titre</label>

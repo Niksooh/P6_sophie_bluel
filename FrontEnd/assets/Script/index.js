@@ -271,28 +271,38 @@ function addCategoriesPopin(categories) {
   });
 }
 
-const downloadNewImg = document.querySelector("input");
-const previewNewImg = document.querySelector("img");
+const downloadNewImg = document.getElementById("file");
+const previewNewImg = document.getElementById("preview");
 const maxFileSize = 4 * 1024 * 1024;
+const valid = document.querySelector(".btn-add-photo-2");
 
-function seeNewImg() {
-
-  if (downloadNewImg.files.length === 0) {
-    alert("Veuillez sélectionner un fichier.");/* Alerte si aucun fichier selectionné */
-    return;
-  }
-
+downloadNewImg.addEventListener("change", () => {
   const file = downloadNewImg.files[0];
 
   if (file.size > maxFileSize) {
-    alert("Le fichier est trop volumineux. Veuillez sélectionner un fichier plus petit."); /* Alerte si fichier dépasse 4Mo*/
+    alert(
+      "Le fichier est trop volumineux. Veuillez sélectionner un fichier plus petit."
+    ); /* Alerte si fichier dépasse 4Mo*/
     return;
   }
 
   let readerImg = new FileReader();
- readerImg.readAsDataURL(downloadNewImg.files[0]);
-  readerImg.onload = function(e) {
+  readerImg.readAsDataURL(downloadNewImg.files[0]);
+  readerImg.onload = function (e) {
+    document.querySelector(".upload-content").style.display = "none";
+    previewNewImg.style.display = "block";
     previewNewImg.classList.add("show");
     previewNewImg.src = e.target.result;
   };
-}
+});
+
+valid.addEventListener("click", (e) => {
+  e.preventDefault();
+  
+  if (downloadNewImg.files.length === 0) {
+    alert(
+      "Veuillez sélectionner un fichier."
+    ); /* Alerte si aucun fichier selectionné */
+    return;
+  }
+});
