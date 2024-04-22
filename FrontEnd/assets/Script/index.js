@@ -164,7 +164,7 @@ window.addEventListener("keydown", function (e) {
   }
 });
 
-/*Fonction pour afficher le contenu du popin*/
+/*Fonction pour afficher le contenu de la popin*/
 
 const galleryContentPopinFirst = document.querySelector(".gallery-listener");
 
@@ -180,6 +180,8 @@ function worksCreatepopinFirst() {
     imgPopinFirst.classList.add("popin-img");
     imgPopinFirst.src = work.imageUrl;
 
+    /*Suppression Image*/
+
     const garbage = document.createElement("i");
     garbage.classList.add("fa-solid", "fa-trash-can", "delete-work");
     garbage.id = `garbage-${work.id}`;
@@ -193,7 +195,6 @@ function worksCreatepopinFirst() {
 }
 
 async function worksDeletepopinFirst(id) {
-
   try {
     const response = await fetch(`http://localhost:5678/api/works/${id}`, {
       method: "DELETE",
@@ -213,7 +214,6 @@ async function worksDeletepopinFirst(id) {
     worksCreatepopinFirst();
 
     worksCreate();
-
   } catch (error) {
     alert("Erreur : " + error);
   }
@@ -241,6 +241,7 @@ addBtn.addEventListener("click", () => {
   returnPopin.addEventListener("click", firstPopReturn);
 });
 
+/*Fonction retour popin précedente*/
 function firstPopReturn() {
   popAdd.style.display = "none";
   firstPop.style.display = "block";
@@ -293,17 +294,14 @@ downloadNewImg.addEventListener("change", () => {
   };
 });
 
-
-/**Fonction pour publier la photo depuis l'API */
+/*Fonction pour publier la photo depuis l'API + Alerte absence image*/
 
 async function publiNewImg(event) {
   event.preventDefault();
   try {
-    const files = downloadNewImg.files
+    const files = downloadNewImg.files;
     if (files.length === 0) {
-      alert(
-        "Veuillez sélectionner un fichier."
-      );
+      alert("Veuillez sélectionner un fichier.");
       return;
     }
     const photoTitle = document.getElementById("photo-title");
@@ -311,14 +309,14 @@ async function publiNewImg(event) {
     const dataForm = new FormData();
     dataForm.append("title", photoTitle.value);
     dataForm.append("category", categoriesPopin.value);
-    dataForm.append("image",files[0]);
+    dataForm.append("image", files[0]);
 
     const response = await fetch("http://localhost:5678/api/works", {
       method: "POST",
       headers: {
-        "Authorization": "Bearer " + localStorage.getItem("token"),
+        Authorization: "Bearer " + localStorage.getItem("token"),
       },
-      body: dataForm
+      body: dataForm,
     });
 
     if (!response.ok) {
