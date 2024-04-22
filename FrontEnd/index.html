@@ -82,7 +82,7 @@
           <input type="email" name="email" id="email" />
           <label for="message">Message</label>
           <textarea name="message" id="message" cols="30" rows="10"></textarea>
-          <input type="submit" value="Envoyer" />
+          <input class="submit-btn" type="submit" value="Envoyer" />
         </form>
       </section>
 
@@ -117,8 +117,10 @@
                   id="file"
                   type="file"
                   name="file"
-                  accept="image/png, image/jpeg"
+                  accept="image/png, image/jpeg
+                  onchange="seeNewImg()"
                 />
+                <img src="" alt="">
                 <p class="file-type">jpg, png (taille max : 4 Mo)</p>
               </div>
               <div class="preview"></div>
@@ -132,7 +134,7 @@
               </select>
             </div>
             <div class="submit">
-              <input type="submit" id="submit-btn" value="Valider" />
+              <input type="submit" class="btn-add-photo-2" value="Valider" />
             </div>
           </form>
         </div>

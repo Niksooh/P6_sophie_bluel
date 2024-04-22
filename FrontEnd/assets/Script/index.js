@@ -236,6 +236,10 @@ addBtn.addEventListener("click", () => {
   btnCross.addEventListener("click", closePopin);
   popAdd.addEventListener("click", stopPropagation);
 
+  const btnCrossDeux = document.querySelector(".close-icon-2");
+  btnCrossDeux.addEventListener("click", closePopin);
+  popAdd.addEventListener("click", stopPropagation);
+
   const returnPopin = document.querySelector(".return-left");
   returnPopin.addEventListener("click", firstPopReturn);
 });
@@ -257,7 +261,6 @@ arrowLeft.addEventListener("click", () => {
 const categoriesPopin = document.getElementById("photo-category");
 
 function addCategoriesPopin(categories) {
-  console.log(categories);
   categories.forEach((category) => {
     const worksCategories = document.createElement("option");
 
@@ -266,4 +269,30 @@ function addCategoriesPopin(categories) {
     worksCategories.innerText = category.name;
     categoriesPopin.appendChild(worksCategories);
   });
+}
+
+const downloadNewImg = document.querySelector("input");
+const previewNewImg = document.querySelector("img");
+const maxFileSize = 4 * 1024 * 1024;
+
+function seeNewImg() {
+
+  if (downloadNewImg.files.length === 0) {
+    alert("Veuillez sélectionner un fichier.");/* Alerte si aucun fichier selectionné */
+    return;
+  }
+
+  const file = downloadNewImg.files[0];
+
+  if (file.size > maxFileSize) {
+    alert("Le fichier est trop volumineux. Veuillez sélectionner un fichier plus petit."); /* Alerte si fichier dépasse 4Mo*/
+    return;
+  }
+
+  let readerImg = new FileReader();
+ readerImg.readAsDataURL(downloadNewImg.files[0]);
+  readerImg.onload = function(e) {
+    previewNewImg.classList.add("show");
+    previewNewImg.src = e.target.result;
+  };
 }
