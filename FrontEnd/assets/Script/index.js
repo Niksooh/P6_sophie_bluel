@@ -10,8 +10,8 @@ const token = localStorage.getItem("token");
   try {
     const worksResponse = await fetch("http://localhost:5678/api/works");
     works = await worksResponse.json();
-    createWorks();
-    createWorkspopinFirst();
+    worksCreate();
+    worksCreatepopinFirst();
     const categoriesResponse = await fetch(
       "http://localhost:5678/api/categories"
     );
@@ -27,12 +27,12 @@ const token = localStorage.getItem("token");
 
 /* DÉCLARATION DE FONCTIONS */
 
-function deleteWorks() {
+function worksDelete() {
   galleryElement.innerHTML = "";
 }
 
-function createWorks(categoryId = null) {
-  deleteWorks();
+function worksCreate(categoryId = null) {
+  worksDelete();
 
   let displayWorks = works;
 
@@ -79,7 +79,7 @@ function createFilter(categories) {
     categoryBtnFilter.addEventListener("click", (e) => {
       const selectedCategoryId = parseInt(e.target.value);
 
-      createWorks(selectedCategoryId);
+      worksCreate(selectedCategoryId);
 
       document.querySelectorAll(".category-btn").forEach((filterColor) => {
         filterColor.classList.toggle(
@@ -168,7 +168,7 @@ window.addEventListener("keydown", function (e) {
 
 const galleryContentPopinFirst = document.querySelector(".gallery-listener");
 
-function createWorkspopinFirst() {
+function worksCreatepopinFirst() {
   galleryContentPopinFirst.innerHTML = "";
 
   works.forEach((work) => {
@@ -183,7 +183,7 @@ function createWorkspopinFirst() {
     const garbage = document.createElement("i");
     garbage.classList.add("fa-solid", "fa-trash-can", "delete-work");
     garbage.id = `garbage-${work.id}`;
-    garbage.addEventListener("click", () => deleteWorkspopinFirst(work.id));
+    garbage.addEventListener("click", () => worksDeletepopinFirst(work.id));
 
     popinFirst.appendChild(imgPopinFirst);
     popinFirst.appendChild(garbage);
@@ -192,14 +192,14 @@ function createWorkspopinFirst() {
   });
 }
 
-async function deleteWorkspopinFirst(id) {
+async function worksDeletepopinFirst(id) {
   try {
     const response = await fetch(`http://localhost:5678/api/works/${id}`, {
       method: "DELETE",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("token"),
+        Authorization: "Bearer" + localStorage.getItem("token"),
       },
     });
 
@@ -209,14 +209,14 @@ async function deleteWorkspopinFirst(id) {
 
     works = works.filter((work) => work.id !== id);
 
-    createWorkspopinFirst();
+    worksCreatepopinFirst();
 
     messagePhotoDeleted.style.display = "flex";
     setTimeout(() => {
       messagePhotoDeleted.style.display = "none";
     }, 1500);
 
-    createWorks();
+    worksCreate();
   } catch (error) {
     alert("Erreur : " + error);
   }
@@ -296,13 +296,50 @@ downloadNewImg.addEventListener("change", () => {
   };
 });
 
-valid.addEventListener("click", (e) => {
+/* valid.addEventListener("click", (e) => {
   e.preventDefault();
-  
   if (downloadNewImg.files.length === 0) {
     alert(
       "Veuillez sélectionner un fichier."
-    ); /* Alerte si aucun fichier selectionné */
+    );
     return;
   }
+}); */
+
+/**Fonction pour publier la photo depuis l'API */
+
+
+
+async function publiNewImg() {
+  try {
+    const photoTitle = document.getElementById("photo-title");
+    const dataForm = new FormData();
+    dataForm.append("title", photoTitle.value);
+    dataForm.append("category", categoriesPopin.value);
+    dataForm.append("image", downloadNewImg.files[0]);
+
+    const response = await fetch("http://localhost:5678/api/works", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer" + localStorage.getItem("token"),
+      },
+      body: dataForm,
+    });
+    if (!response.ok) {
+      throw new Error(`${response.status}`);
+    }
+    console.log("coucou");
+    const worksResponse = await response.json();
+    works.push(worksResponse);
+    worksCreate();
+    closePopin();
+  } catch (error) {
+    alert("Erreur : " + error);
+  }
+}
+
+const photoValid = document.querySelector("#photo-form");
+
+photoValid.addEventListener("submit", function (e) {
+  publiNewImg();
 });

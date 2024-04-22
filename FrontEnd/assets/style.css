@@ -585,8 +585,8 @@ footer nav ul {
   background-color: #b9c5cc;
   color: #306685;
   padding: 10px 33px;
-  margin-top: 6px;
   border-radius: 50px;
+  margin-bottom: -10px;
   cursor: pointer;
   transition: transform;
 }
@@ -607,7 +607,8 @@ footer nav ul {
 .upload-icon {
   font-size: 76px;
   color: #b9c5cc;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  margin-top: 20px;
 }
 
 .btn-add-photo {
@@ -649,7 +650,7 @@ footer nav ul {
 .file-type {
   font-size: 10px;
   color: #444;
-  margin-bottom: 6px;
+  margin-bottom: 20px;
 }
 
 #photo-title,
@@ -677,7 +678,7 @@ footer nav ul {
 }
 
 #preview {
-  width: 80%;
+  width: 40%;
   height: 100%;
   object-fit: cover;
   border: 1px solid #ccc;
