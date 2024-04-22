@@ -193,13 +193,14 @@ function worksCreatepopinFirst() {
 }
 
 async function worksDeletepopinFirst(id) {
+
   try {
     const response = await fetch(`http://localhost:5678/api/works/${id}`, {
       method: "DELETE",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: "Bearer" + localStorage.getItem("token"),
+        Authorization: "Bearer " + localStorage.getItem("token"),
       },
     });
 
@@ -211,12 +212,8 @@ async function worksDeletepopinFirst(id) {
 
     worksCreatepopinFirst();
 
-    messagePhotoDeleted.style.display = "flex";
-    setTimeout(() => {
-      messagePhotoDeleted.style.display = "none";
-    }, 1500);
-
     worksCreate();
+
   } catch (error) {
     alert("Erreur : " + error);
   }
@@ -296,50 +293,47 @@ downloadNewImg.addEventListener("change", () => {
   };
 });
 
-/* valid.addEventListener("click", (e) => {
-  e.preventDefault();
-  if (downloadNewImg.files.length === 0) {
-    alert(
-      "Veuillez sélectionner un fichier."
-    );
-    return;
-  }
-}); */
 
 /**Fonction pour publier la photo depuis l'API */
 
-
-
-async function publiNewImg() {
+async function publiNewImg(event) {
+  event.preventDefault();
   try {
+    const files = downloadNewImg.files
+    if (files.length === 0) {
+      alert(
+        "Veuillez sélectionner un fichier."
+      );
+      return;
+    }
     const photoTitle = document.getElementById("photo-title");
+
     const dataForm = new FormData();
     dataForm.append("title", photoTitle.value);
     dataForm.append("category", categoriesPopin.value);
-    dataForm.append("image", downloadNewImg.files[0]);
+    dataForm.append("image",files[0]);
 
     const response = await fetch("http://localhost:5678/api/works", {
       method: "POST",
       headers: {
-        Authorization: "Bearer" + localStorage.getItem("token"),
+        "Authorization": "Bearer " + localStorage.getItem("token"),
       },
-      body: dataForm,
+      body: dataForm
     });
+
     if (!response.ok) {
       throw new Error(`${response.status}`);
     }
-    console.log("coucou");
+
     const worksResponse = await response.json();
     works.push(worksResponse);
     worksCreate();
-    closePopin();
+    closePopin(event);
   } catch (error) {
     alert("Erreur : " + error);
   }
 }
 
-const photoValid = document.querySelector("#photo-form");
+const photoValid = document.getElementById("photo-form");
 
-photoValid.addEventListener("submit", function (e) {
-  publiNewImg();
-});
+photoValid.addEventListener("submit", publiNewImg);
