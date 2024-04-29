@@ -72,7 +72,7 @@ function createFilter(categories) {
     categoryBtnFilter.value = categoryElement.id;
     categoryBtnFilter.classList.add("category-btn");
     if (categoryElement.id === 0) {
-      categoryBtnFilter.classList.add("categorye-selected");
+      categoryBtnFilter.classList.add("category-selected");
     }
     categoriesElementFilter.appendChild(categoryBtnFilter);
 
@@ -326,6 +326,7 @@ async function publiNewImg(event) {
     const worksResponse = await response.json();
     works.push(worksResponse);
     worksCreate();
+    worksCreatepopinFirst();
     closePopin(event);
   } catch (error) {
     alert("Erreur : " + error);
